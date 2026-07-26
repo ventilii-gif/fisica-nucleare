@@ -169,6 +169,41 @@ section.view.active{display:block}
 .pills button[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 html[data-theme="dark"] .pills button[aria-current="true"]{color:#17141F}
 
+/* ---------- Moduli e sotto-navigazione ---------- */
+.module{display:none;animation:fade .34s ease both}
+.module.active{display:block}
+.mod-head{margin:20px 0 4px}
+.mod-head .eyebrow{margin-bottom:.15rem}
+.mod-head h2{margin:.1rem 0 .2rem}
+.subnav{
+  display:flex;flex-wrap:wrap;gap:7px;margin:16px 0 6px;
+  border-bottom:1px solid var(--border);padding-bottom:12px;
+}
+.subnav button{
+  appearance:none;cursor:pointer;border:1px solid var(--border-strong);
+  background:var(--surface);color:var(--ink-soft);
+  padding:9px 17px;border-radius:999px;font-size:.9rem;font-weight:600;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:background-color 200ms,color 200ms,border-color 200ms,transform 120ms;
+  font-family:ui-sans-serif,system-ui,sans-serif;
+}
+.subnav button:hover{transform:translateY(-1px);color:var(--ink)}
+.subnav button[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+html[data-theme="dark"] .subnav button[aria-current="true"]{color:#17141F}
+.subnav button .ic{width:16px;height:16px;flex:0 0 16px}
+.subnav .badge-n{
+  font-size:.7rem;min-width:18px;height:18px;padding:0 5px;border-radius:9px;
+  background:var(--surface-3);color:var(--accent-ink);display:inline-grid;place-items:center;font-weight:700;
+}
+.subnav button[aria-current="true"] .badge-n{background:rgba(255,255,255,.28);color:#fff}
+.pane{display:none;animation:fade .3s ease both}
+.pane.active{display:block}
+.pane-head{
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:6px 0 2px;
+}
+.pane-head .pane-eyebrow{font-family:ui-sans-serif,system-ui,sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.quiz-launch{max-width:640px}
+
 /* ---------- Card e blocchi ---------- */
 .card{
   background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
@@ -382,31 +417,31 @@ footer.site{border-top:1px solid var(--border);background:var(--surface);padding
 
 <nav class="main ui" aria-label="Sezioni principali">
   <div class="wrap">
-    <button data-view="teoria" aria-current="true">Teoria</button>
-    <button data-view="simulazioni">Simulazioni</button>
-    <button data-view="esercizi">Esercizi guidati</button>
-    <button data-view="quiz">Quiz</button>
+    <button data-mod="m1" aria-current="true">1. Struttura del nucleo</button>
+    <button data-mod="m2">2. Energia di legame</button>
+    <button data-mod="m3">3. Radioattività</button>
+    <button data-mod="m4">4. Fissione e fusione</button>
+    <button data-mod="m5">5. Applicazioni</button>
+    <button data-mod="mfin">Quiz finale</button>
   </div>
 </nav>
 
 <main class="wrap">
 
-<!-- ================================================================
-     TEORIA
-     ================================================================ -->
-<section class="view active" id="view-teoria">
+<!-- Contenitore dei moduli, costruito dinamicamente dall'orchestratore.
+     Le sezioni originali qui sotto restano nel DOM come "magazzino" di
+     contenuti: l'orchestratore ne sposta i nodi dentro i moduli. -->
+<div id="moduleHost"></div>
 
-  <div class="pills ui" id="teoriaPills" role="tablist" aria-label="Argomenti di teoria">
-    <button data-topic="t1" aria-current="true">1. Struttura del nucleo</button>
-    <button data-topic="t2">2. Energia di legame</button>
-    <button data-topic="t3">3. Radioattività</button>
-    <button data-topic="t4">4. Fissione e fusione</button>
-    <button data-topic="t5">5. Applicazioni</button>
-  </div>
+<!-- ================================================================
+     MAGAZZINO CONTENUTI (nascosto: i nodi vengono ricollocati via JS)
+     ================================================================ -->
+<div id="contentStore" hidden>
+
+<section class="view" id="view-teoria">
 
   <!-- ---------------- TOPIC 1 ---------------- -->
   <div class="topic active" id="topic-t1">
-    <p class="eyebrow ui">Modulo 1</p>
     <h2>La struttura del nucleo atomico</h2>
     <p class="lead">Tutta la massa dell'atomo, a meno di circa lo 0,05%, è concentrata in una regione centrale il cui raggio è circa diecimila volte più piccolo di quello dell'atomo. Capire come questa regione tiene insieme cariche elettriche dello stesso segno è il punto di partenza della fisica nucleare.</p>
 
@@ -526,7 +561,6 @@ footer.site{border-top:1px solid var(--border);background:var(--surface);padding
 
   <!-- ---------------- TOPIC 2 ---------------- -->
   <div class="topic" id="topic-t2">
-    <p class="eyebrow ui">Modulo 2</p>
     <h2>Energia di legame nucleare</h2>
     <p class="lead">Se pesiamo un nucleo troviamo sempre una massa <em>minore</em> della somma delle masse dei nucleoni che lo compongono. Questa differenza, apparentemente paradossale, è la chiave quantitativa di tutta la fisica nucleare: dice quanta energia è stata liberata nel formare il nucleo e quanta ne servirebbe per smontarlo.</p>
 
@@ -631,7 +665,6 @@ footer.site{border-top:1px solid var(--border);background:var(--surface);padding
 
   <!-- ---------------- TOPIC 3 ---------------- -->
   <div class="topic" id="topic-t3">
-    <p class="eyebrow ui">Modulo 3</p>
     <h2>Radioattività</h2>
     <p class="lead">Un nucleo instabile si trasforma spontaneamente in uno più stabile emettendo particelle o radiazione elettromagnetica. Il fenomeno è probabilistico: non si può prevedere <em>quando</em> un singolo nucleo decadrà, ma il comportamento di un insieme di nuclei segue una legge matematica esatta.</p>
 
@@ -756,7 +789,6 @@ footer.site{border-top:1px solid var(--border);background:var(--surface);padding
 
   <!-- ---------------- TOPIC 4 ---------------- -->
   <div class="topic" id="topic-t4">
-    <p class="eyebrow ui">Modulo 4</p>
     <h2>Reazioni nucleari: fissione e fusione</h2>
     <p class="lead">La curva dell'energia di legame indica due strade per liberare energia dai nuclei: spezzare i nuclei pesanti o unire quelli leggeri. Sono processi fisicamente opposti, con condizioni di innesco e problemi tecnologici completamente diversi.</p>
 
@@ -879,7 +911,6 @@ footer.site{border-top:1px solid var(--border);background:var(--surface);padding
 
   <!-- ---------------- TOPIC 5 ---------------- -->
   <div class="topic" id="topic-t5">
-    <p class="eyebrow ui">Modulo 5</p>
     <h2>Applicazioni</h2>
     <p class="lead">Le stesse leggi fisiche viste finora si ritrovano in contesti molto diversi: la produzione di energia elettrica, la diagnostica medica, la datazione archeologica, la misura dell'esposizione alle radiazioni. In questo modulo distinguiamo con cura il fenomeno fisico dalle valutazioni tecnologiche, sanitarie e sociali che lo accompagnano.</p>
 
@@ -1181,6 +1212,8 @@ footer.site{border-top:1px solid var(--border);background:var(--surface);padding
   <div id="quizRunner" style="display:none"></div>
 </section>
 
+</div><!-- /#contentStore -->
+
 </main>
 
 <footer class="site">
@@ -1297,35 +1330,14 @@ themeBtn.addEventListener('click', () => {
 });
 
 /* ==================================================================
-   NAVIGAZIONE
+   NAVIGAZIONE (gestita dall'orchestratore dei moduli, in fondo al file)
    ================================================================== */
-function showView(name){
-  $$('section.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
-  $$('nav.main button').forEach(b => b.setAttribute('aria-current', String(b.dataset.view === name)));
-  window.scrollTo({top:0, behavior:'smooth'});
-  setTimeout(redrawAll, 60);
-}
-$$('nav.main button').forEach(b => b.addEventListener('click', () => showView(b.dataset.view)));
-
-$$('#teoriaPills button').forEach(b => b.addEventListener('click', () => {
-  $$('#teoriaPills button').forEach(x => x.setAttribute('aria-current', String(x === b)));
-  $$('#view-teoria .topic').forEach(t => t.classList.toggle('active', t.id === 'topic-' + b.dataset.topic));
-  $$('#view-teoria .topic').forEach(t => t.style.display = t.classList.contains('active') ? '' : 'none');
-  window.scrollTo({top:0, behavior:'smooth'});
-}));
-$$('#view-teoria .topic').forEach((t,i) => { if(i>0) t.style.display = 'none'; });
-
-$$('#simPills button').forEach(b => b.addEventListener('click', () => {
-  $$('#simPills button').forEach(x => x.setAttribute('aria-current', String(x === b)));
-  $$('#view-simulazioni .sim').forEach(s => s.style.display = (s.id === 'sim-' + b.dataset.sim) ? '' : 'none');
-  setTimeout(redrawAll, 60);
-}));
-$$('#view-simulazioni .sim').forEach((s,i) => { if(i>0) s.style.display = 'none'; });
-
 const REDRAWS = [];
 function redrawAll(){ REDRAWS.forEach(f => { try{ f(); }catch(e){} }); }
 let rzT = null;
 window.addEventListener('resize', () => { clearTimeout(rzT); rzT = setTimeout(redrawAll, 140); });
+/* elemento realmente visibile a schermo (nessun antenato display:none) */
+function isVisible(el){ return !!(el && el.offsetParent !== null); }
 
 /* ==================================================================
    DATI: ELEMENTI E NUCLIDI
@@ -1699,7 +1711,7 @@ function cellClass(Z, N){
   function loop(now){
     const dt = Math.min((now - lastFrame)/1000, 0.05);
     lastFrame = now;
-    const visible = $('#view-simulazioni').classList.contains('active') && $('#sim-s-decay').style.display !== 'none';
+    const visible = isVisible(cv);
     if(phase === 'decaying'){
       tAnim += dt;
       if(tAnim > 1.35) finishDecay();
@@ -1903,7 +1915,7 @@ function cellClass(Z, N){
       $('#roNmc').textContent = nfi(mcN);
       if(mcT > win || mcN === 0){ mcOn = false; $('#mcBtn').textContent = 'Avvia simulazione statistica'; }
     }
-    const visible = $('#view-simulazioni').classList.contains('active') && $('#sim-s-law').style.display !== 'none';
+    const visible = isVisible(cv);
     if(visible) draw();
     requestAnimationFrame(step);
   }
@@ -2082,7 +2094,7 @@ function cellClass(Z, N){
 
   function step(now){
     const dt = Math.min((now-last)/1000, 0.05); last = now;
-    const visible = $('#view-simulazioni').classList.contains('active') && $('#sim-s-chain').style.display !== 'none';
+    const visible = isVisible(cv);
     if(running && visible){
       const sp = parseFloat(slSpeed.value) * 150;
       for(let i=neutrons.length-1; i>=0; i--){
@@ -2131,86 +2143,86 @@ function cellClass(Z, N){
    ESERCIZI GUIDATI
    ================================================================== */
 const ESERCIZI = [
-{ t:'Composizione di un nuclide', d:'facile', u:'neutroni', a:118, tol:0.001,
+{ m:'m1', t:'Composizione di un nuclide', d:'facile', u:'neutroni', a:118, tol:0.001,
   q:'Il nuclide dell\'oro si scrive \\(^{197}_{\\ 79}\\mathrm{Au}\\). Quanti <strong>neutroni</strong> contiene il suo nucleo?',
   h:['Il pedice indica il numero atomico \\(Z\\), cioè il numero di protoni; l\'apice indica il numero di massa \\(A\\), cioè il numero totale di nucleoni.',
      'I nucleoni sono solo di due tipi: \\(A = Z + N\\).'],
   s:'Dai due indici: \\(Z = 79\\) protoni e \\(A = 197\\) nucleoni totali. Quindi<br>\\[ N = A - Z = 197 - 79 = 118 \\]<br>Il nucleo contiene 118 neutroni. Il rapporto \\(N/Z = 1{,}49\\) conferma che nei nuclei pesanti i neutroni sono nettamente più numerosi dei protoni.' },
 
-{ t:'Raggio di un nucleo', d:'facile', u:'fm', a:6.0, tol:0.02,
+{ m:'m1', t:'Raggio di un nucleo', d:'facile', u:'fm', a:6.0, tol:0.02,
   q:'Stima il raggio del nucleo di \\(^{125}_{\\ 52}\\mathrm{Te}\\), sapendo che \\(R \\simeq R_0 A^{1/3}\\) con \\(R_0 = 1{,}2\\) fm. Esprimi il risultato in femtometri.',
   h:['Serve solo il numero di massa \\(A\\), non \\(Z\\): il raggio non dipende dalla carica.',
      '\\(125^{1/3} = 5\\), perché \\(5^3 = 125\\).'],
   s:'\\[ R = 1{,}2 \\cdot 125^{1/3} = 1{,}2 \\cdot 5 = 6{,}0\\ \\mathrm{fm} \\]Per confronto, il raggio atomico è dell\'ordine di \\(10^5\\) fm: il nucleo occupa una frazione dell\'ordine di \\(10^{-15}\\) del volume atomico, eppure contiene quasi tutta la massa.' },
 
-{ t:'Frazione residua dopo più dimezzamenti', d:'facile', u:'%', a:6.25, tol:0.02,
+{ m:'m3', t:'Frazione residua dopo più dimezzamenti', d:'facile', u:'%', a:6.25, tol:0.02,
   q:'Lo iodio-131 ha un tempo di dimezzamento di circa 8,0 giorni. Quale <strong>percentuale</strong> del campione iniziale è ancora presente dopo 32 giorni?',
   h:['Conta quanti tempi di dimezzamento sono trascorsi: \\(n = t / T_{1/2}\\).',
      'Dopo \\(n\\) dimezzamenti resta la frazione \\((1/2)^n\\).'],
   s:'Il numero di dimezzamenti è \\(n = 32/8{,}0 = 4\\). Quindi<br>\\[ \\frac{N}{N_0} = \\left(\\frac{1}{2}\\right)^{4} = \\frac{1}{16} = 0{,}0625 = 6{,}25\\% \\]Attenzione all\'errore tipico: dopo quattro dimezzamenti non è decaduto "tutto", ma resta ancora un sedicesimo del campione.' },
 
-{ t:'Energia di legame del deuterio', d:'medio', u:'MeV', a:2.224, tol:0.02,
+{ m:'m2', t:'Energia di legame del deuterio', d:'medio', u:'MeV', a:2.224, tol:0.02,
   q:'Il nucleo di deuterio \\(^{2}_{1}\\mathrm{H}\\) ha massa 2,013553 u. Calcola la sua energia di legame, sapendo che \\(m_p = 1{,}007276\\) u e \\(m_n = 1{,}008665\\) u.',
   h:['Calcola prima il difetto di massa: \\(\\Delta m = (m_p + m_n) - m_{\\text{nucleo}}\\).',
      'Converti poi in energia con \\(1\\ \\mathrm{u} \\to 931{,}494\\) MeV.'],
   s:'Somma delle masse dei costituenti liberi:<br>\\[ m_p + m_n = 1{,}007276 + 1{,}008665 = 2{,}015941\\ \\mathrm{u} \\]Difetto di massa:<br>\\[ \\Delta m = 2{,}015941 - 2{,}013553 = 0{,}002388\\ \\mathrm{u} \\]Energia di legame:<br>\\[ E_\\ell = 0{,}002388 \\times 931{,}494 = 2{,}22\\ \\mathrm{MeV} \\]Il deuterio è il nucleo composto più debolmente legato: appena 1,11 MeV per nucleone, contro gli 8,8 MeV del ferro. Per questo è relativamente facile scinderlo con un fotone gamma.' },
 
-{ t:'Energia di legame per nucleone del ferro-56', d:'medio', u:'MeV/nucleone', a:8.79, tol:0.02,
+{ m:'m2', t:'Energia di legame per nucleone del ferro-56', d:'medio', u:'MeV/nucleone', a:8.79, tol:0.02,
   q:'L\'atomo di \\(^{56}_{26}\\mathrm{Fe}\\) ha massa atomica 55,934937 u. Usando \\(m(^{1}\\mathrm{H}) = 1{,}007825\\) u e \\(m_n = 1{,}008665\\) u, calcola l\'energia di legame <strong>per nucleone</strong>.',
   h:['Con le masse atomiche si usa \\(\\Delta m = Z\\,m(^{1}\\mathrm{H}) + N\\,m_n - m_{\\text{atomo}}\\): gli elettroni si semplificano da soli.',
      'Il ferro-56 ha \\(Z = 26\\) e \\(N = 56 - 26 = 30\\).',
      'Ricorda di dividere l\'energia di legame totale per \\(A = 56\\).'],
   s:'Somma dei costituenti:<br>\\[ 26(1{,}007825) + 30(1{,}008665) = 26{,}20345 + 30{,}25995 = 56{,}46340\\ \\mathrm{u} \\]Difetto di massa:<br>\\[ \\Delta m = 56{,}46340 - 55{,}934937 = 0{,}528463\\ \\mathrm{u} \\]Energia di legame totale:<br>\\[ E_\\ell = 0{,}528463 \\times 931{,}494 = 492{,}3\\ \\mathrm{MeV} \\]Per nucleone:<br>\\[ \\frac{E_\\ell}{A} = \\frac{492{,}3}{56} = 8{,}79\\ \\mathrm{MeV/nucleone} \\]È il valore massimo della curva di stabilità: nessun nucleo lega i propri nucleoni più saldamente.' },
 
-{ t:'Vita media del cobalto-60', d:'medio', u:'anni', a:7.60, tol:0.02,
+{ m:'m3', t:'Vita media del cobalto-60', d:'medio', u:'anni', a:7.60, tol:0.02,
   q:'Il cobalto-60, usato in radioterapia e per la sterilizzazione, ha \\(T_{1/2} = 5{,}27\\) anni. Calcola la sua <strong>vita media</strong> \\(\\tau\\), espressa in anni.',
   h:['La costante di decadimento è \\(\\lambda = \\ln 2 / T_{1/2}\\).',
      'La vita media è il reciproco della costante di decadimento: \\(\\tau = 1/\\lambda\\).'],
   s:'\\[ \\lambda = \\frac{0{,}693}{5{,}27} = 0{,}1315\\ \\mathrm{anni^{-1}} \\]\\[ \\tau = \\frac{1}{\\lambda} = \\frac{5{,}27}{0{,}693} = 7{,}60\\ \\text{anni} \\]In generale \\(\\tau = T_{1/2}/\\ln 2 \\approx 1{,}44\\,T_{1/2}\\): la vita media è sempre maggiore del tempo di dimezzamento, perché i pochi nuclei che sopravvivono a lungo alzano la media.' },
 
-{ t:'Tempo trascorso da una frazione residua', d:'medio', u:'anni', a:9950, tol:0.02,
+{ m:'m3', t:'Tempo trascorso da una frazione residua', d:'medio', u:'anni', a:9950, tol:0.02,
   q:'In un campione di materiale organico il carbonio-14 residuo è il 30% di quello iniziale. Sapendo che \\(T_{1/2} = 5730\\) anni, quanto tempo è trascorso?',
   h:['Parti da \\(N/N_0 = e^{-\\lambda t}\\) e applica il logaritmo naturale a entrambi i membri.',
      '\\(t = \\dfrac{1}{\\lambda}\\ln\\dfrac{N_0}{N} = \\dfrac{T_{1/2}}{\\ln 2}\\ln\\dfrac{N_0}{N}\\).',
      '\\(\\ln(1/0{,}30) = \\ln(3{,}33) = 1{,}204\\).'],
   s:'\\[ t = \\frac{T_{1/2}}{\\ln 2}\\,\\ln\\!\\left(\\frac{N_0}{N}\\right) = \\frac{5730}{0{,}693} \\times \\ln\\!\\left(\\frac{1}{0{,}30}\\right) \\]\\[ t = 8267 \\times 1{,}204 = 9{,}95\\cdot 10^{3}\\ \\text{anni} \\]Un controllo di coerenza: il 30% è compreso fra il 50% (un dimezzamento, 5730 anni) e il 25% (due dimezzamenti, 11 460 anni), e infatti il risultato cade fra questi due valori, vicino al secondo.' },
 
-{ t:'Dose assorbita e dose equivalente', d:'medio', u:'mSv', a:400, tol:0.02,
+{ m:'m5', t:'Dose assorbita e dose equivalente', d:'medio', u:'mSv', a:400, tol:0.02,
   q:'Un tessuto di massa 3,0 kg assorbe complessivamente \\(6{,}0\\cdot10^{-2}\\) J di energia da una sorgente di particelle alfa, per le quali il fattore di ponderazione è \\(w_R = 20\\). Calcola la <strong>dose equivalente</strong> in millisievert.',
   h:['La dose assorbita è \\(D = E/m\\), misurata in gray (1 Gy = 1 J/kg).',
      'La dose equivalente è \\(H = w_R\\,D\\), misurata in sievert.',
      'Ricorda che 1 Sv = 1000 mSv.'],
   s:'Dose assorbita:<br>\\[ D = \\frac{E}{m} = \\frac{6{,}0\\cdot10^{-2}}{3{,}0} = 2{,}0\\cdot10^{-2}\\ \\mathrm{Gy} \\]Dose equivalente:<br>\\[ H = w_R D = 20 \\times 2{,}0\\cdot10^{-2} = 0{,}40\\ \\mathrm{Sv} = 400\\ \\mathrm{mSv} \\]Lo stesso deposito di energia sotto forma di raggi gamma (\\(w_R = 1\\)) avrebbe dato 20 mSv: a parità di energia ceduta, le particelle alfa producono ionizzazione molto più concentrata e quindi un danno biologico maggiore.' },
 
-{ t:'Attività di un campione di cobalto-60', d:'difficile', u:'Bq', a:4.18e13, tol:0.03,
+{ m:'m3', t:'Attività di un campione di cobalto-60', d:'difficile', u:'Bq', a:4.18e13, tol:0.03,
   q:'Calcola l\'attività di 1,00 g di cobalto-60 puro (\\(T_{1/2} = 5{,}27\\) anni). Usa \\(1\\ \\text{anno} = 3{,}156\\cdot10^{7}\\) s e \\(N_A = 6{,}022\\cdot10^{23}\\ \\mathrm{mol^{-1}}\\). Esprimi il risultato in becquerel.',
   h:['Servono due passaggi: il numero di nuclei presenti e la costante di decadimento in \\(\\mathrm{s^{-1}}\\).',
      '\\(N = \\dfrac{m}{M}N_A\\) con \\(M \\approx 60\\) g/mol.',
      'Converti \\(T_{1/2}\\) in secondi <em>prima</em> di calcolare \\(\\lambda\\), poi usa \\(A = \\lambda N\\).'],
   s:'Numero di nuclei:<br>\\[ N = \\frac{1{,}00}{60}\\times 6{,}022\\cdot10^{23} = 1{,}00\\cdot10^{22} \\]Tempo di dimezzamento in secondi:<br>\\[ T_{1/2} = 5{,}27 \\times 3{,}156\\cdot10^{7} = 1{,}663\\cdot10^{8}\\ \\mathrm{s} \\]Costante di decadimento:<br>\\[ \\lambda = \\frac{0{,}693}{1{,}663\\cdot10^{8}} = 4{,}17\\cdot10^{-9}\\ \\mathrm{s^{-1}} \\]Attività:<br>\\[ A = \\lambda N = 4{,}17\\cdot10^{-9} \\times 1{,}00\\cdot10^{22} = 4{,}2\\cdot10^{13}\\ \\mathrm{Bq} \\]Corrisponde a circa 1130 Ci: è l\'ordine di grandezza di una sorgente industriale, maneggiata solo da remoto e con schermature di piombo dedicate.' },
 
-{ t:'Datazione al carbonio-14', d:'difficile', u:'anni', a:6790, tol:0.03,
+{ m:'m5', t:'Datazione al carbonio-14', d:'difficile', u:'anni', a:6790, tol:0.03,
   q:'Un frammento di legno antico presenta un\'attività specifica di 0,110 Bq per grammo di carbonio, mentre il legno vivente ha 0,250 Bq per grammo. Determina l\'età del reperto (\\(T_{1/2} = 5730\\) anni).',
   h:['L\'attività segue la stessa legge esponenziale del numero di nuclei: \\(A = A_0 e^{-\\lambda t}\\).',
      'Puoi lavorare direttamente con il rapporto delle attività, senza calcolare il numero di nuclei.',
      '\\(\\ln(0{,}250/0{,}110) = \\ln(2{,}273) = 0{,}821\\).'],
   s:'\\[ t = \\frac{T_{1/2}}{\\ln 2}\\,\\ln\\!\\left(\\frac{A_0}{A}\\right) = \\frac{5730}{0{,}693}\\ \\ln\\!\\left(\\frac{0{,}250}{0{,}110}\\right) \\]\\[ t = 8267 \\times 0{,}821 = 6{,}79\\cdot10^{3}\\ \\text{anni} \\]Il reperto risale a circa 6800 anni fa, nel Neolitico. Il metodo funziona perché il legno, una volta tagliato, non scambia più carbonio con l\'ambiente: da quel momento il \\(^{14}\\mathrm{C}\\) decade senza essere rimpiazzato.' },
 
-{ t:'Energia liberata in una fissione', d:'difficile', u:'MeV', a:173.3, tol:0.03,
+{ m:'m4', t:'Energia liberata in una fissione', d:'difficile', u:'MeV', a:173.3, tol:0.03,
   q:'Calcola l\'energia liberata nella fissione<br>\\[ ^{1}_{0}n + ^{235}_{\\ 92}\\mathrm{U} \\rightarrow\\ ^{141}_{\\ 56}\\mathrm{Ba} + ^{92}_{36}\\mathrm{Kr} + 3\\,^{1}_{0}n \\]Masse atomiche: \\(m(^{235}\\mathrm{U}) = 235{,}043930\\) u, \\(m(^{141}\\mathrm{Ba}) = 140{,}914411\\) u, \\(m(^{92}\\mathrm{Kr}) = 91{,}926156\\) u, \\(m_n = 1{,}008665\\) u.',
   h:['Il Q-valore è \\(Q = [\\sum m_{\\text{iniziali}} - \\sum m_{\\text{finali}}]c^2\\).',
      'Attenzione: a sinistra c\'è un neutrone, a destra ce ne sono tre. Non semplificarli tutti.',
      'Il numero di elettroni si bilancia da solo: 92 a sinistra, 56 + 36 = 92 a destra.'],
   s:'Massa totale iniziale:<br>\\[ 235{,}043930 + 1{,}008665 = 236{,}052595\\ \\mathrm{u} \\]Massa totale finale:<br>\\[ 140{,}914411 + 91{,}926156 + 3(1{,}008665) = 235{,}866562\\ \\mathrm{u} \\]Difetto di massa:<br>\\[ \\Delta m = 236{,}052595 - 235{,}866562 = 0{,}186033\\ \\mathrm{u} \\]Energia liberata:<br>\\[ Q = 0{,}186033 \\times 931{,}494 = 173\\ \\mathrm{MeV} \\]Il valore comunemente citato di ~200 MeV comprende anche l\'energia rilasciata nei successivi decadimenti \\(\\beta^-\\) dei frammenti, che restano radioattivi a lungo dopo la fissione.' },
 
-{ t:'Energia da un grammo di uranio-235', d:'difficile', u:'J', a:8.2e10, tol:0.04,
+{ m:'m4', t:'Energia da un grammo di uranio-235', d:'difficile', u:'J', a:8.2e10, tol:0.04,
   q:'Supponendo che ogni fissione liberi 200 MeV, calcola l\'energia totale ottenibile dalla fissione completa di 1,00 g di \\(^{235}\\mathrm{U}\\). Esprimi il risultato in joule (\\(1\\ \\mathrm{MeV} = 1{,}602\\cdot10^{-13}\\) J).',
   h:['Calcola prima quanti nuclei ci sono in 1,00 g: \\(N = (m/M)N_A\\) con \\(M \\approx 235\\) g/mol.',
      'Ogni nucleo dà una fissione, quindi l\'energia totale in MeV è \\(N \\times 200\\).',
      'Converti infine i MeV in joule.'],
   s:'Numero di nuclei:<br>\\[ N = \\frac{1{,}00}{235}\\times 6{,}022\\cdot10^{23} = 2{,}56\\cdot10^{21} \\]Energia in MeV:<br>\\[ E = 2{,}56\\cdot10^{21} \\times 200 = 5{,}12\\cdot10^{23}\\ \\mathrm{MeV} \\]Conversione in joule:<br>\\[ E = 5{,}12\\cdot10^{23} \\times 1{,}602\\cdot10^{-13} = 8{,}2\\cdot10^{10}\\ \\mathrm{J} \\]Un solo grammo libera quanto la combustione di circa 2,5 tonnellate di carbone. È la differenza di sei ordini di grandezza fra energia nucleare ed energia chimica, e spiega sia l\'interesse tecnologico sia la necessità di gestire con cura i prodotti della reazione.' },
 
-{ t:'Fusione deuterio-trizio', d:'difficile', u:'MeV', a:17.59, tol:0.03,
+{ m:'m4', t:'Fusione deuterio-trizio', d:'difficile', u:'MeV', a:17.59, tol:0.03,
   q:'Calcola l\'energia liberata nella reazione<br>\\[ ^{2}_{1}\\mathrm{H} + ^{3}_{1}\\mathrm{H} \\rightarrow\\ ^{4}_{2}\\mathrm{He} + ^{1}_{0}n \\]Masse atomiche: \\(m(^{2}\\mathrm{H}) = 2{,}014102\\) u, \\(m(^{3}\\mathrm{H}) = 3{,}016049\\) u, \\(m(^{4}\\mathrm{He}) = 4{,}002603\\) u, \\(m_n = 1{,}008665\\) u.',
   h:['Anche qui il Q-valore è la differenza fra la massa totale iniziale e quella finale, moltiplicata per \\(c^2\\).',
      'Gli elettroni si bilanciano: 1 + 1 a sinistra, 2 a destra.',
@@ -2218,9 +2230,10 @@ const ESERCIZI = [
   s:'Massa iniziale:<br>\\[ 2{,}014102 + 3{,}016049 = 5{,}030151\\ \\mathrm{u} \\]Massa finale:<br>\\[ 4{,}002603 + 1{,}008665 = 5{,}011268\\ \\mathrm{u} \\]\\[ \\Delta m = 0{,}018883\\ \\mathrm{u} \\]\\[ Q = 0{,}018883 \\times 931{,}494 = 17{,}6\\ \\mathrm{MeV} \\]In valore assoluto è dieci volte meno di una fissione, ma i nucleoni coinvolti sono 5 anziché 236: <strong>per nucleone</strong> si ottengono 3,5 MeV contro gli 0,85 MeV della fissione, cioè circa quattro volte tanto. È questo il motivo dell\'interesse per la fusione controllata.' }
 ];
 
-(function buildExercises(){
-  const list = $('#exList'); if(!list) return;
-  ESERCIZI.forEach((ex, i) => {
+function buildExercises(list, modFilter){
+  if(!list) return;
+  const items = ESERCIZI.map((ex,gi)=>({ex,gi})).filter(o => !modFilter || o.ex.m === modFilter);
+  items.forEach(({ex, gi}, i) => {
     const el = document.createElement('div');
     el.className = 'ex';
     el.innerHTML =
@@ -2285,7 +2298,8 @@ const ESERCIZI = [
     $('input', el).addEventListener('keydown', e => { if(e.key === 'Enter') $('.checkBtn', el).click(); });
   });
   renderMath(list);
-})();
+}
+window.buildExercises = buildExercises;
 
 function parseNum(s){
   if(!s) return null;
@@ -2606,9 +2620,9 @@ fin:{ title:'Quiz finale di riepilogo', sub:'Tutto il programma — correzione a
    MOTORE DEI QUIZ
    ================================================================== */
 (function quizEngine(){
-  const ORDER = ['s1','s2','s3','s4','s5','fin'];
-  const menu = $('#quizMenu'), home = $('#quizHome'), runner = $('#quizRunner');
   const LETTERS = ['A','B','C','D','E','F'];
+  let runner = $('#quizRunner');   /* contenitore in cui viene montato il quiz */
+  let hostExit = null;             /* callback chiamata quando si esce dal quiz */
 
   function score(key){
     try{ const v = localStorage.getItem('fn-quiz-' + key); return v === null ? null : JSON.parse(v); }
@@ -2616,24 +2630,6 @@ fin:{ title:'Quiz finale di riepilogo', sub:'Tutto il programma — correzione a
   }
   function saveScore(key, s){
     try{ const old = score(key); if(!old || s > old) localStorage.setItem('fn-quiz-' + key, JSON.stringify(s)); }catch(e){}
-  }
-
-  function buildMenu(){
-    menu.innerHTML = '';
-    ORDER.forEach(k => {
-      const Q = QUIZ[k];
-      const s = score(k);
-      const b = document.createElement('button');
-      b.className = 'quiz-card ui' + (Q.final ? ' final' : '');
-      b.innerHTML = '<span class="tag">' + (Q.final ? 'riepilogo generale' : '15 domande') + '</span>' +
-        '<h4>' + Q.title + '</h4><p>' + Q.sub + '</p>' +
-        '<p style="margin-top:6px;font-size:.82rem">' + (Q.final
-          ? 'Correzione e punteggio solo al termine di tutte le domande.'
-          : 'Correzione immediata con spiegazione dopo ogni risposta.') + '</p>' +
-        '<div class="st">' + (s === null ? 'Non ancora svolto' : 'Miglior punteggio: ' + s + '/15') + '</div>';
-      b.addEventListener('click', () => start(k));
-      menu.appendChild(b);
-    });
   }
 
   function shuffled(n){
@@ -2644,13 +2640,18 @@ fin:{ title:'Quiz finale di riepilogo', sub:'Tutto il programma — correzione a
 
   let state = null;
 
+  /* monta un quiz nel contenitore dato; onExit viene invocata all'uscita */
+  function mount(container, key, onExit){
+    runner = container; hostExit = onExit || null;
+    start(key);
+  }
+
   function start(key){
     const Q = QUIZ[key];
     state = {
       key, Q, i: 0, right: 0, answers: [],
       perm: Q.q.map(q => shuffled(q.o.length))
     };
-    home.style.display = 'none';
     runner.style.display = '';
     renderQuestion();
     window.scrollTo({top:0, behavior:'smooth'});
@@ -2658,10 +2659,8 @@ fin:{ title:'Quiz finale di riepilogo', sub:'Tutto il programma — correzione a
 
   function backHome(){
     state = null;
-    runner.style.display = 'none';
     runner.innerHTML = '';
-    home.style.display = '';
-    buildMenu();
+    if(hostExit){ hostExit(); }
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
@@ -2796,13 +2795,424 @@ fin:{ title:'Quiz finale di riepilogo', sub:'Tutto il programma — correzione a
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
-  /* collegamenti dai moduli di teoria */
+  /* API pubblica: l'orchestratore dei moduli monta i quiz nei rispettivi pannelli */
+  window.FNQuiz = { mount, score };
+})();
+
+/* ==================================================================
+   WIDGET INTERATTIVI PER I MODULI 1, 2, 5
+   ================================================================== */
+const M1H = 1.007825, MN_A = 1.008665, U2MEV = 931.494;
+
+/* ---- Modulo 1: costruttore di nuclidi ---- */
+function buildBuilderWidget(host){
+  host.innerHTML =
+    '<div class="card"><h3 style="margin-top:.2rem">Costruttore di nuclidi</h3>' +
+    '<p>Aggiungi o togli protoni e neutroni e osserva che nuclide ottieni: il simbolo, il rapporto \\(N/Z\\), il raggio stimato e la sua posizione sulla carta dei nuclidi. La banda scura è la valle di stabilità.</p>' +
+    '<div class="controls">' +
+      '<div class="ctl"><label>Protoni Z = <span class="val" id="bZ">6</span></label>' +
+      '<div class="btnrow" style="margin:4px 0"><button class="btn ghost ui" data-d="Z-1">−</button>' +
+      '<input type="range" id="bZs" min="1" max="92" step="1" value="6" style="flex:1">' +
+      '<button class="btn ghost ui" data-d="Z1">+</button></div></div>' +
+      '<div class="ctl"><label>Neutroni N = <span class="val" id="bN">6</span></label>' +
+      '<div class="btnrow" style="margin:4px 0"><button class="btn ghost ui" data-d="N-1">−</button>' +
+      '<input type="range" id="bNs" min="0" max="146" step="1" value="6" style="flex:1">' +
+      '<button class="btn ghost ui" data-d="N1">+</button></div></div>' +
+    '</div>' +
+    '<div class="readout ui">' +
+      '<div><span class="k">Nuclide</span><div class="v" id="bSym">—</div></div>' +
+      '<div><span class="k">A = Z + N</span><div class="v" id="bA">—</div></div>' +
+      '<div><span class="k">Rapporto N/Z</span><div class="v" id="bRatio">—</div></div>' +
+      '<div><span class="k">Raggio R ≈ 1,2·A^⅓</span><div class="v" id="bR">—</div></div>' +
+      '<div><span class="k">Classificazione</span><div class="v" id="bClass" style="font-size:.98rem">—</div></div>' +
+    '</div>' +
+    '<div class="canvas-box"><canvas id="cvBuild" height="320"></canvas></div>' +
+    '<div class="legend ui"><span><i style="background:var(--ink-soft)"></i>stabile</span>' +
+    '<span><i style="background:var(--c-alpha)"></i>emettitore α</span>' +
+    '<span><i style="background:var(--c-beta-)"></i>β⁻ (troppi neutroni)</span>' +
+    '<span><i style="background:var(--c-beta+)"></i>β⁺ (troppi protoni)</span>' +
+    '<span><i style="background:var(--accent)"></i>nuclide costruito</span></div></div>';
+
+  const zEl=$('#bZs',host), nEl=$('#bNs',host), cv=$('#cvBuild',host);
+  function upd(){
+    const Z=+zEl.value, N=+nEl.value, A=Z+N;
+    $('#bZ',host).textContent=Z; $('#bN',host).textContent=N;
+    $('#bSym',host).textContent = EL[Z] ? (EL[Z]+'-'+A) : ('Z'+Z+'-'+A);
+    $('#bA',host).textContent=A;
+    $('#bRatio',host).textContent = nf(N/Z,2);
+    $('#bR',host).textContent = nf(1.2*Math.cbrt(A),2)+' fm';
+    const cl=cellClass(Z,N);
+    const map={'stable':['Nuclide stabile',COL.inkSoft],'alpha':['Instabile — decade α',COL.alpha],
+      'beta-':['Instabile — decade β⁻',COL.bmin],'beta+':['Instabile — decade β⁺ / cattura K',COL.bplus]};
+    const info = map[cl] || ['Nuclide molto lontano dalla stabilità',COL.muted];
+    const ce=$('#bClass',host); ce.textContent=info[0]; ce.style.color=info[1];
+    drawBuild();
+  }
+  function drawBuild(){
+    const {ctx,w,h}=fitCanvas(cv); ctx.clearRect(0,0,w,h);
+    ctx.fillStyle=COL.canvas; ctx.fillRect(0,0,w,h);
+    const Z=+zEl.value, N=+nEl.value;
+    const padL=40,padB=30,padT=10,padR=10;
+    const cols=w<520?15:21, rows=13;
+    const cw=(w-padL-padR)/cols, ch=(h-padT-padB)/rows;
+    const N0=Math.round(N-(cols-1)/2), Z0=Math.round(Z-(rows-1)/2);
+    const X=n=>padL+(n-N0)*cw, Y=z=>h-padB-(z-Z0+1)*ch;
+    const colmap={'stable':COL.inkSoft,'alpha':COL.alpha,'beta-':COL.bmin,'beta+':COL.bplus};
+    for(let iz=0;iz<rows;iz++)for(let inn=0;inn<cols;inn++){
+      const zz=Z0+iz, nn=N0+inn; if(zz<1||nn<0)continue;
+      const cl=cellClass(zz,nn); if(!cl)continue;
+      ctx.fillStyle=colmap[cl]; ctx.globalAlpha=(cl==='stable')?0.78:0.28;
+      ctx.fillRect(X(nn)+1,Y(zz)+1,cw-2,ch-2); ctx.globalAlpha=1;
+    }
+    ctx.strokeStyle=COL.grid; ctx.lineWidth=1;
+    for(let i=0;i<=cols;i++){ctx.beginPath();ctx.moveTo(padL+i*cw,padT);ctx.lineTo(padL+i*cw,h-padB);ctx.stroke();}
+    for(let i=0;i<=rows;i++){ctx.beginPath();ctx.moveTo(padL,h-padB-i*ch);ctx.lineTo(w-padR,h-padB-i*ch);ctx.stroke();}
+    ctx.strokeStyle=COL.accent; ctx.lineWidth=3; ctx.strokeRect(X(N)+1,Y(Z)+1,cw-2,ch-2);
+    ctx.fillStyle=COL.accent; ctx.globalAlpha=.35; ctx.fillRect(X(N)+1,Y(Z)+1,cw-2,ch-2); ctx.globalAlpha=1;
+    ctx.fillStyle=COL.ink; ctx.font='600 12px system-ui,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+    if(cw>24 && EL[Z]) ctx.fillText(EL[Z], X(N)+cw/2, Y(Z)+ch/2);
+    ctx.fillStyle=COL.muted; ctx.font='11px system-ui,sans-serif';
+    ctx.textBaseline='top';
+    for(let inn=0;inn<cols;inn+=3) ctx.fillText(String(N0+inn), X(N0+inn)+cw/2, h-padB+6);
+    ctx.textAlign='right'; ctx.textBaseline='middle';
+    for(let iz=0;iz<rows;iz+=3) ctx.fillText(String(Z0+iz), padL-6, Y(Z0+iz)+ch/2);
+    ctx.textAlign='center'; ctx.textBaseline='alphabetic'; ctx.fillStyle=COL.inkSoft; ctx.font='600 11px system-ui,sans-serif';
+    ctx.fillText('N (neutroni)', (padL+w-padR)/2, h-4);
+    ctx.save(); ctx.translate(12,(padT+h-padB)/2); ctx.rotate(-Math.PI/2); ctx.fillText('Z (protoni)',0,0); ctx.restore();
+  }
+  zEl.addEventListener('input',upd); nEl.addEventListener('input',upd);
+  $$('[data-d]',host).forEach(b=>b.addEventListener('click',()=>{
+    const d=b.dataset.d;
+    if(d==='Z1') zEl.value=Math.min(92,+zEl.value+1);
+    if(d==='Z-1') zEl.value=Math.max(1,+zEl.value-1);
+    if(d==='N1') nEl.value=Math.min(146,+nEl.value+1);
+    if(d==='N-1') nEl.value=Math.max(0,+nEl.value-1);
+    upd();
+  }));
+  REDRAWS.push(()=>{ if(isVisible(cv)) drawBuild(); });
+  upd(); renderMath(host);
+}
+
+/* ---- Modulo 2: curva dell'energia di legame ---- */
+const BIND = [
+  {s:'²H',  Z:1,  A:2,   m:2.014102},
+  {s:'⁴He', Z:2,  A:4,   m:4.002603},
+  {s:'⁷Li', Z:3,  A:7,   m:7.016004},
+  {s:'¹²C', Z:6,  A:12,  m:12.000000},
+  {s:'¹⁶O', Z:8,  A:16,  m:15.994915},
+  {s:'²⁰Ne',Z:10, A:20,  m:19.992440},
+  {s:'⁴⁰Ca',Z:20, A:40,  m:39.962591},
+  {s:'⁵⁶Fe',Z:26, A:56,  m:55.934937},
+  {s:'⁸⁴Kr',Z:36, A:84,  m:83.911507},
+  {s:'¹²⁰Sn',Z:50,A:120, m:119.902202},
+  {s:'¹⁴⁰Ce',Z:58,A:140, m:139.905439},
+  {s:'²⁰⁸Pb',Z:82,A:208, m:207.976652},
+  {s:'²³⁸U', Z:92,A:238, m:238.050788}
+];
+BIND.forEach(b=>{ b.EA = (b.Z*M1H + (b.A-b.Z)*MN_A - b.m)*U2MEV / b.A; b.El = b.EA*b.A; b.dm = (b.Z*M1H + (b.A-b.Z)*MN_A - b.m); });
+function buildBindingWidget(host){
+  let opts = BIND.map((b,i)=>'<option value="'+i+'"'+(b.s==='⁵⁶Fe'?' selected':'')+'>'+b.s+'  (A='+b.A+')</option>').join('');
+  host.innerHTML =
+    '<div class="card"><h3 style="margin-top:.2rem">Curva dell\'energia di legame</h3>' +
+    '<p>Scegli un nuclide: il widget calcola il difetto di massa, l\'energia di legame totale e quella <em>per nucleone</em>, e mostra dove si colloca sulla curva di stabilità. Le frecce ricordano da che parte conviene la fusione e da che parte la fissione.</p>' +
+    '<div class="controls"><div class="ctl" style="flex:1 1 240px"><label for="bindSel">Nuclide</label>' +
+    '<select id="bindSel">'+opts+'</select></div></div>' +
+    '<div class="readout ui">' +
+      '<div><span class="k">Difetto di massa Δm</span><div class="v" id="wDm">—</div></div>' +
+      '<div><span class="k">Energia di legame E<sub>ℓ</sub></span><div class="v" id="wEl">—</div></div>' +
+      '<div><span class="k">E<sub>ℓ</sub> / A</span><div class="v" id="wEA">—</div></div>' +
+      '<div><span class="k">Posizione</span><div class="v" id="wPos" style="font-size:.98rem">—</div></div>' +
+    '</div>' +
+    '<div class="canvas-box"><canvas id="cvBind" height="330"></canvas></div></div>';
+  const sel=$('#bindSel',host), cv=$('#cvBind',host);
+  function draw(){
+    const {ctx,w,h}=fitCanvas(cv); ctx.clearRect(0,0,w,h);
+    ctx.fillStyle=COL.canvas; ctx.fillRect(0,0,w,h);
+    const padL=52,padR=16,padT=16,padB=40, pw=w-padL-padR, ph=h-padT-padB;
+    const Amax=245, Emax=9.2;
+    const X=a=>padL+(a/Amax)*pw, Y=e=>padT+ph-(e/Emax)*ph;
+    ctx.strokeStyle=COL.grid; ctx.lineWidth=1; ctx.fillStyle=COL.muted; ctx.font='11px system-ui,sans-serif';
+    ctx.textAlign='right'; ctx.textBaseline='middle';
+    for(let e=0;e<=8;e+=2){ ctx.beginPath(); ctx.moveTo(padL,Y(e)); ctx.lineTo(w-padR,Y(e)); ctx.stroke(); ctx.fillText(e,padL-6,Y(e)); }
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    for(let a=0;a<=240;a+=40){ ctx.fillText(a,X(a),h-padB+6); }
+    ctx.strokeStyle=COL.borderStrong; ctx.lineWidth=1.3;
+    ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,padT+ph); ctx.lineTo(w-padR,padT+ph); ctx.stroke();
+    ctx.fillStyle=COL.inkSoft; ctx.textBaseline='alphabetic'; ctx.fillText('numero di massa A', padL+pw/2, h-6);
+    ctx.save(); ctx.translate(14,padT+ph/2); ctx.rotate(-Math.PI/2); ctx.fillText('E/A (MeV/nucleone)',0,0); ctx.restore();
+    /* curva attraverso i punti calcolati */
+    ctx.strokeStyle=COL.accent; ctx.lineWidth=2.6; ctx.beginPath();
+    BIND.forEach((b,i)=>{ const x=X(b.A),y=Y(b.EA); if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+    ctx.stroke();
+    BIND.forEach(b=>{ ctx.beginPath(); ctx.arc(X(b.A),Y(b.EA),3,0,6.2832); ctx.fillStyle=COL.accent; ctx.fill(); });
+    const b=BIND[+sel.value];
+    /* frecce fusione/fissione */
+    ctx.fillStyle=COL.muted; ctx.font='12px system-ui,sans-serif'; ctx.textAlign='center';
+    ctx.strokeStyle=COL.bmin; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(X(8),Y(1.1)); ctx.lineTo(X(52),Y(1.1)); ctx.stroke();
+    ctx.fillStyle=COL.bmin; ctx.fillText('fusione →',X(30),Y(1.1)-6);
+    ctx.strokeStyle=COL.bplus; ctx.beginPath(); ctx.moveTo(X(238),Y(1.1)); ctx.lineTo(X(70),Y(1.1)); ctx.stroke();
+    ctx.fillStyle=COL.bplus; ctx.fillText('← fissione',X(150),Y(1.1)-6);
+    /* marcatore nuclide scelto */
+    ctx.beginPath(); ctx.arc(X(b.A),Y(b.EA),7,0,6.2832); ctx.fillStyle=COL.accentInk; ctx.fill();
+    ctx.strokeStyle=COL.canvas; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle=COL.accentInk; ctx.font='600 13px system-ui,sans-serif'; ctx.textAlign='center';
+    ctx.fillText(b.s+' — '+nf(b.EA,2)+' MeV', X(b.A), Y(b.EA)-14);
+  }
+  function upd(){
+    const b=BIND[+sel.value];
+    $('#wDm',host).textContent = nf(b.dm,4)+' u';
+    $('#wEl',host).textContent = nf(b.El,1)+' MeV';
+    $('#wEA',host).textContent = nf(b.EA,2)+' MeV';
+    let pos;
+    if(b.A<=28) pos='Ramo della fusione: unendosi risale la curva';
+    else if(b.A>=90) pos='Ramo della fissione: spezzandosi risale la curva';
+    else pos='Vicino al massimo: molto stabile';
+    $('#wPos',host).textContent=pos;
+    draw();
+  }
+  sel.addEventListener('change',upd);
+  REDRAWS.push(()=>{ if(isVisible(cv)) draw(); });
+  upd(); renderMath(host);
+}
+
+/* ---- Modulo 5: datazione al carbonio-14 ---- */
+function buildDatingWidget(host){
+  const T12=5730, A0=0.250;
+  host.innerHTML =
+    '<div class="card"><h3 style="margin-top:.2rem">Datazione al carbonio-14</h3>' +
+    '<p>Un organismo vivente ha un\'attività di circa 0,25 Bq per grammo di carbonio. Alla morte il \\(^{14}\\mathrm{C}\\) decade con \\(T_{1/2}=5730\\) anni senza essere rimpiazzato. Regola la frazione di \\(^{14}\\mathrm{C}\\) residua e leggi l\'età stimata del reperto.</p>' +
+    '<div class="controls"><div class="ctl"><label>Frazione di ¹⁴C residua = <span class="val" id="dFrac">50</span>%</label>' +
+    '<input type="range" id="dSl" min="1" max="100" step="1" value="50"></div></div>' +
+    '<div class="readout ui">' +
+      '<div><span class="k">Età stimata</span><div class="v" id="dAge">—</div></div>' +
+      '<div><span class="k">Attività residua</span><div class="v" id="dAct">—</div></div>' +
+      '<div><span class="k">Tempi di dimezzamento</span><div class="v" id="dNh">—</div></div>' +
+      '<div><span class="k">Affidabilità</span><div class="v" id="dRel" style="font-size:.98rem">—</div></div>' +
+    '</div>' +
+    '<div class="canvas-box"><canvas id="cvDate" height="300"></canvas></div>' +
+    '<div class="legend ui"><span><i style="background:var(--accent)"></i>¹⁴C residuo N(t)/N₀</span>' +
+    '<span><i style="background:var(--c-alpha)"></i>reperto attuale</span></div></div>';
+  const sl=$('#dSl',host), cv=$('#cvDate',host);
+  function age(frac){ return (T12/Math.LN2)*Math.log(1/frac); }
+  function draw(){
+    const {ctx,w,h}=fitCanvas(cv); ctx.clearRect(0,0,w,h);
+    ctx.fillStyle=COL.canvas; ctx.fillRect(0,0,w,h);
+    const padL=48,padR=16,padT=16,padB=40, pw=w-padL-padR, ph=h-padT-padB;
+    const Tmax=40000;
+    const X=t=>padL+(t/Tmax)*pw, Y=f=>padT+ph-f*ph;
+    ctx.strokeStyle=COL.grid; ctx.lineWidth=1; ctx.fillStyle=COL.muted; ctx.font='11px system-ui,sans-serif';
+    ctx.textAlign='right'; ctx.textBaseline='middle';
+    for(let f=0;f<=1.001;f+=0.25){ ctx.beginPath(); ctx.moveTo(padL,Y(f)); ctx.lineTo(w-padR,Y(f)); ctx.stroke(); ctx.fillText(Math.round(f*100)+'%',padL-6,Y(f)); }
+    ctx.textAlign='center'; ctx.textBaseline='top';
+    for(let k=1;k*T12<=Tmax;k++){ const x=X(k*T12); ctx.strokeStyle=COL.borderStrong; ctx.setLineDash([4,4]); ctx.globalAlpha=.5;
+      ctx.beginPath(); ctx.moveTo(x,padT); ctx.lineTo(x,padT+ph); ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha=1;
+      if(k<=6){ ctx.fillStyle=COL.muted; ctx.fillText(k+'·T½',x,padT+ph+6); } }
+    ctx.strokeStyle=COL.borderStrong; ctx.lineWidth=1.3;
+    ctx.beginPath(); ctx.moveTo(padL,padT); ctx.lineTo(padL,padT+ph); ctx.lineTo(w-padR,padT+ph); ctx.stroke();
+    ctx.strokeStyle=COL.accent; ctx.lineWidth=2.8; ctx.beginPath();
+    for(let i=0;i<=pw;i++){ const t=(i/pw)*Tmax, f=Math.exp(-Math.LN2*t/T12); const x=padL+i,y=Y(f); if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+    ctx.stroke();
+    const frac=+sl.value/100, t=age(frac);
+    if(t<=Tmax){ const x=X(t),y=Y(frac);
+      ctx.strokeStyle=COL.alpha; ctx.setLineDash([5,4]); ctx.lineWidth=1.4;
+      ctx.beginPath(); ctx.moveTo(x,padT+ph); ctx.lineTo(x,y); ctx.lineTo(padL,y); ctx.stroke(); ctx.setLineDash([]);
+      ctx.beginPath(); ctx.arc(x,y,6,0,6.2832); ctx.fillStyle=COL.alpha; ctx.fill();
+      ctx.strokeStyle=COL.canvas; ctx.lineWidth=2; ctx.stroke();
+    }
+    ctx.fillStyle=COL.inkSoft; ctx.font='12px system-ui,sans-serif'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
+    ctx.fillText('tempo trascorso (anni)', padL+pw/2, h-6);
+  }
+  function upd(){
+    const frac=+sl.value/100, t=age(frac);
+    $('#dFrac',host).textContent=sl.value;
+    $('#dAge',host).textContent = t<1?'campione recente' : nfi(t)+' anni';
+    $('#dAct',host).textContent = nf(A0*frac,3)+' Bq/g';
+    $('#dNh',host).textContent = nf(t/T12,2);
+    const re=$('#dRel',host);
+    if(t<=50000){ re.textContent='misura affidabile'; re.style.color=COL.ok; }
+    else { re.textContent='oltre ~50 000 anni: non affidabile'; re.style.color=COL.warn; }
+    draw();
+  }
+  sl.addEventListener('input',upd);
+  REDRAWS.push(()=>{ if(isVisible(cv)) draw(); });
+  upd(); renderMath(host);
+}
+
+/* ==================================================================
+   ORCHESTRATORE DEI MODULI (navigazione a schede stile "relatività")
+   ================================================================== */
+(function moduleOrchestrator(){
+  const SUBS = [
+    {k:'teoria', label:'Teoria'},
+    {k:'sim',    label:'Simulazioni'},
+    {k:'eser',   label:'Esercizi'},
+    {k:'quiz',   label:'Quiz'}
+  ];
+  const MODULES = [
+    {id:'m1', n:'1', label:'Struttura del nucleo atomico', topic:'topic-t1', quiz:'s1',
+      sims:[{kind:'widget', name:'Costruttore di nuclidi', build:buildBuilderWidget}]},
+    {id:'m2', n:'2', label:'Energia di legame nucleare', topic:'topic-t2', quiz:'s2',
+      sims:[{kind:'widget', name:'Curva dell\'energia di legame', build:buildBindingWidget}]},
+    {id:'m3', n:'3', label:'Radioattività', topic:'topic-t3', quiz:'s3',
+      sims:[{kind:'node', name:'Decadimento di un nucleo', node:'sim-s-decay'},
+            {kind:'node', name:'Legge del decadimento', node:'sim-s-law'}]},
+    {id:'m4', n:'4', label:'Fissione e fusione nucleare', topic:'topic-t4', quiz:'s4',
+      sims:[{kind:'node', name:'Reazione a catena', node:'sim-s-chain'}]},
+    {id:'m5', n:'5', label:'Applicazioni', topic:'topic-t5', quiz:'s5',
+      sims:[{kind:'widget', name:'Datazione al carbonio-14', build:buildDatingWidget}]}
+  ];
+  const host = $('#moduleHost');
+  const exCount = m => ESERCIZI.filter(e => e.m === m).length;
+  const current = {};   /* id modulo -> sotto-scheda corrente */
+
+  const IC = {
+    teoria:'<path d="M4 5h11a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5H9a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h11z"/>',
+    sim:'<path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="4"/>',
+    eser:'<path d="M9 11l3 3 8-8M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/>',
+    quiz:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7M12 17h.01"/>'
+  };
+  function subIcon(k){ return '<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+IC[k]+'</svg>'; }
+
+  /* costruzione di ogni modulo */
+  MODULES.forEach(M => {
+    const sec = document.createElement('section');
+    sec.className = 'module'; sec.id = 'mod-' + M.id;
+    let subBtns = SUBS.map(s => {
+      let badge = '';
+      if(s.k === 'eser') badge = '<span class="badge-n">' + exCount(M.id) + '</span>';
+      if(s.k === 'sim')  badge = '<span class="badge-n">' + M.sims.length + '</span>';
+      return '<button data-sub="' + s.k + '">' + subIcon(s.k) + s.label + badge + '</button>';
+    }).join('');
+    sec.innerHTML =
+      '<div class="mod-head"><p class="eyebrow ui">Modulo ' + M.n + '</p></div>' +
+      '<div class="subnav ui" role="tablist">' + subBtns + '</div>' +
+      '<div class="pane pane-teoria"></div>' +
+      '<div class="pane pane-sim"></div>' +
+      '<div class="pane pane-eser"></div>' +
+      '<div class="pane pane-quiz"></div>';
+    host.appendChild(sec);
+
+    /* TEORIA: sposta il nodo topic dentro il pane */
+    const topicNode = document.getElementById(M.topic);
+    if(topicNode) $('.pane-teoria', sec).appendChild(topicNode);
+
+    /* SIMULAZIONI */
+    const simPane = $('.pane-sim', sec);
+    if(M.sims.length === 1){
+      const s = M.sims[0];
+      if(s.kind === 'node'){ const nd=document.getElementById(s.node); if(nd) simPane.appendChild(nd); }
+      else s.build(simPane);
+    }else{
+      const pills = document.createElement('div'); pills.className = 'pills ui';
+      const holder = document.createElement('div');
+      M.sims.forEach((s, i) => {
+        const box = document.createElement('div'); box.className = 'sim-slot'; box.style.display = i===0?'':'none';
+        if(s.kind === 'node'){ const nd=document.getElementById(s.node); if(nd) box.appendChild(nd); }
+        else s.build(box);
+        holder.appendChild(box);
+        const pb = document.createElement('button'); pb.textContent = s.name;
+        pb.setAttribute('aria-current', String(i===0));
+        pb.addEventListener('click', () => {
+          $$('button', pills).forEach((x,j)=>x.setAttribute('aria-current', String(j===i)));
+          $$('.sim-slot', holder).forEach((x,j)=>x.style.display = j===i?'':'none');
+          setTimeout(redrawAll, 40);
+        });
+        pills.appendChild(pb);
+      });
+      simPane.appendChild(pills); simPane.appendChild(holder);
+    }
+
+    /* ESERCIZI */
+    const eserPane = $('.pane-eser', sec);
+    eserPane.innerHTML =
+      '<div class="pane-head"><span class="pane-eyebrow ui">Esercizi guidati</span></div>' +
+      '<p style="color:var(--muted);font-size:.93rem">Problemi del modulo a difficoltà crescente, con suggerimenti progressivi e verifica immediata (tolleranza 2%).</p>' +
+      '<div class="note neutral" style="font-size:.9rem"><p style="margin:.2rem 0">\\(1\\ \\mathrm{u}=931{,}494\\ \\mathrm{MeV}/c^2\\) · \\(m_p=1{,}007276\\) u · \\(m_n=1{,}008665\\) u · \\(m(^1\\mathrm{H})=1{,}007825\\) u · \\(N_A=6{,}022\\cdot10^{23}\\) · \\(\\ln 2=0{,}693\\)</p></div>' +
+      '<div class="exListMod"></div>';
+    buildExercises($('.exListMod', eserPane), M.id);
+
+    /* QUIZ */
+    const quizPane = $('.pane-quiz', sec);
+    const slot = document.createElement('div'); slot.className = 'quiz-slot';
+    quizPane.appendChild(slot);
+    renderQuizLauncher(slot, M);
+  });
+
+  function renderQuizLauncher(slot, M){
+    const Q = QUIZ[M.quiz];
+    const best = window.FNQuiz.score(M.quiz);
+    slot.innerHTML =
+      '<div class="card quiz-launch"><p class="eyebrow ui">Quiz del modulo ' + M.n + '</p>' +
+      '<h3 style="margin-top:.2rem">' + Q.sub + '</h3>' +
+      '<p>10 domande di teoria e 5 problemi numerici, limitati agli argomenti di questo modulo. Correzione immediata con spiegazione dopo ogni risposta; l\'ordine delle opzioni è rimescolato a ogni tentativo.</p>' +
+      '<div class="st" style="font-weight:700;color:var(--accent-ink);font-family:ui-sans-serif,system-ui,sans-serif;margin:8px 0">' +
+        (best === null ? 'Non ancora svolto' : 'Miglior punteggio: ' + best + '/15') + '</div>' +
+      '<div class="btnrow"><button class="btn ui" data-start>Inizia il quiz del modulo</button></div></div>';
+    $('[data-start]', slot).addEventListener('click', () => {
+      window.FNQuiz.mount(slot, M.quiz, () => renderQuizLauncher(slot, M));
+    });
+    renderMath(slot);
+  }
+
+  /* modulo finale (quiz di riepilogo) */
+  const finSec = document.createElement('section');
+  finSec.className = 'module'; finSec.id = 'mod-mfin';
+  finSec.innerHTML =
+    '<div class="mod-head"><p class="eyebrow ui">Riepilogo generale</p></div>' +
+    '<div class="quiz-slot"></div>';
+  host.appendChild(finSec);
+  function renderFinalLauncher(){
+    const slot = $('.quiz-slot', finSec);
+    const best = window.FNQuiz.score('fin');
+    slot.innerHTML =
+      '<div class="card quiz-launch"><p class="eyebrow ui">Quiz finale</p>' +
+      '<h2 style="margin-top:.2rem">Riepilogo su tutto il programma</h2>' +
+      '<p class="lead">10 domande di teoria e 5 problemi numerici su tutti i moduli. A differenza dei quiz di sezione, qui la correzione e il punteggio compaiono <strong>solo alla fine</strong>, dopo aver risposto a tutte le domande.</p>' +
+      '<div class="note neutral" style="font-size:.92rem"><p style="margin:.2rem 0">Anche in questo quiz la posizione della risposta corretta è rimescolata a ogni tentativo. Puoi tornare alle domande precedenti prima di consegnare.</p></div>' +
+      '<div class="st" style="font-weight:700;color:var(--accent-ink);font-family:ui-sans-serif,system-ui,sans-serif;margin:8px 0">' +
+        (best === null ? 'Non ancora svolto' : 'Miglior punteggio: ' + best + '/15') + '</div>' +
+      '<div class="btnrow"><button class="btn ui" data-start>Inizia il quiz finale</button></div></div>';
+    $('[data-start]', slot).addEventListener('click', () => {
+      window.FNQuiz.mount(slot, 'fin', renderFinalLauncher);
+    });
+    renderMath(slot);
+  }
+  renderFinalLauncher();
+
+  /* ---- navigazione ---- */
+  function showSub(id, sub){
+    const sec = $('#mod-' + id);
+    if(!sec) return;
+    current[id] = sub;
+    $$('.subnav button', sec).forEach(b => b.setAttribute('aria-current', String(b.dataset.sub === sub)));
+    $$('.pane', sec).forEach(p => p.classList.toggle('active', p.classList.contains('pane-' + sub)));
+    setTimeout(redrawAll, 50); setTimeout(redrawAll, 260);
+  }
+  function showModule(id, sub){
+    $$('#moduleHost .module').forEach(m => m.classList.toggle('active', m.id === 'mod-' + id));
+    $$('nav.main button').forEach(b => b.setAttribute('aria-current', String(b.dataset.mod === id)));
+    if(id !== 'mfin'){
+      showSub(id, sub || current[id] || 'teoria');
+    }else{
+      setTimeout(redrawAll, 50);
+    }
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  $$('nav.main button').forEach(b => b.addEventListener('click', () => showModule(b.dataset.mod)));
+  $$('#moduleHost .subnav button').forEach(b => b.addEventListener('click', () => {
+    const sec = b.closest('.module'); showSub(sec.id.replace('mod-',''), b.dataset.sub);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }));
+  /* pulsanti "vai al quiz" dentro la teoria: portano alla scheda Quiz del modulo */
   $$('[data-goquiz]').forEach(b => b.addEventListener('click', () => {
-    showView('quiz');
-    setTimeout(() => start(b.dataset.goquiz), 120);
+    const sec = b.closest('.module'); if(sec) showSub(sec.id.replace('mod-',''), 'quiz');
+    window.scrollTo({top:0, behavior:'smooth'});
   }));
 
-  buildMenu();
+  /* stato iniziale */
+  showModule('m1', 'teoria');
+  window.FNnav = showModule;
 })();
 
 /* ultimo passaggio: tipografia matematica su tutta la pagina quando KaTeX è pronto */
