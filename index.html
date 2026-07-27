@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fisica Nucleare — App didattica interattiva</title>
-<meta name="description" content="Applicazione didattica interattiva di Fisica Nucleare per il quinto anno del liceo scientifico: teoria, simulazioni, esercizi guidati e quiz.">
+<meta name="description" content="Applicazione didattica interattiva di Fisica Nucleare: introduzione, teoria, simulazioni, esercizi guidati e quiz.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
 <style>
 /* ============================================================
@@ -401,7 +401,7 @@ footer.site{border-top:1px solid var(--border);background:var(--surface);padding
       </svg>
       <div>
         <h1>Fisica Nucleare</h1>
-        <span class="sub ui">Liceo scientifico &middot; quinto anno</span>
+        <span class="sub ui">Percorso didattico interattivo</span>
       </div>
     </div>
     <div class="spacer"></div>
@@ -417,7 +417,8 @@ footer.site{border-top:1px solid var(--border);background:var(--surface);padding
 
 <nav class="main ui" aria-label="Sezioni principali">
   <div class="wrap">
-    <button data-mod="m1" aria-current="true">1. Struttura del nucleo</button>
+    <button data-mod="intro" aria-current="true">Introduzione</button>
+    <button data-mod="m1">1. Struttura del nucleo</button>
     <button data-mod="m2">2. Energia di legame</button>
     <button data-mod="m3">3. Radioattività</button>
     <button data-mod="m4">4. Fissione e fusione</button>
@@ -429,9 +430,117 @@ footer.site{border-top:1px solid var(--border);background:var(--surface);padding
 <main class="wrap">
 
 <!-- Contenitore dei moduli, costruito dinamicamente dall'orchestratore.
-     Le sezioni originali qui sotto restano nel DOM come "magazzino" di
-     contenuti: l'orchestratore ne sposta i nodi dentro i moduli. -->
-<div id="moduleHost"></div>
+     Le sezioni originali (magazzino, in fondo) restano nel DOM: l'orchestratore
+     ne sposta i nodi dentro i moduli. La sezione "Introduzione" qui sotto è
+     statica e viene gestita dall'orchestratore come scheda senza sotto-navigazione. -->
+<div id="moduleHost">
+
+  <section class="module active" id="mod-intro">
+    <div class="mod-head"><p class="eyebrow ui">Introduzione</p></div>
+    <h2 style="margin-top:.2rem">La fisica del nucleo atomico</h2>
+    <p class="lead">Questo percorso studia il cuore dell'atomo: quella regione centrale, centomila volte più piccola dell'atomo stesso, dove risiede quasi tutta la massa e da cui provengono i fenomeni della radioattività, la fissione e la fusione. È un ambito in cui una manciata di leggi fisiche essenziali spiega tanto le stelle quanto la medicina diagnostica, tanto la datazione di un reperto quanto la produzione di energia.</p>
+
+    <div class="note key">
+      <h4>Un obiettivo di metodo, oltre che di contenuto</h4>
+      <p style="margin-bottom:.2rem">La fisica nucleare è spesso caricata di timori che nascono fuori dall'aula: centrali, scorie, radiazioni. Qui manteniamo un registro scientifico sobrio, tenendo sempre distinto il <strong>fenomeno fisico</strong> &mdash; un nucleo che decade, si spezza o si fonde &mdash; dalle sue <strong>implicazioni sociali, mediche o mediatiche</strong>. L'obiettivo non è né minimizzare né allarmare, ma fornire gli strumenti quantitativi per ragionare con i numeri alla mano.</p>
+    </div>
+
+    <h3>Come è organizzato il percorso</h3>
+    <p>Il programma è diviso in cinque moduli tematici, più un quiz finale di riepilogo. Ogni modulo è indipendente e contiene sempre le stesse quattro schede: <strong>Teoria</strong> (spiegazioni e formule), <strong>Simulazioni</strong> (esperimenti numerici interattivi su canvas), <strong>Esercizi</strong> guidati con suggerimenti progressivi e verifica immediata, e un <strong>Quiz</strong> del modulo con correzione immediata.</p>
+
+    <div class="grid2">
+      <div class="card plain" style="border-color:var(--accent)"><span class="tag">Modulo 1</span><h4 style="margin:.4rem 0 .2rem">Struttura del nucleo</h4><p style="font-size:.92rem;margin:0">Protoni e neutroni, numero atomico e di massa, isotopi, dimensioni nucleari e interazione forte.</p></div>
+      <div class="card plain"><span class="tag">Modulo 2</span><h4 style="margin:.4rem 0 .2rem">Energia di legame</h4><p style="font-size:.92rem;margin:0">Difetto di massa, energia di legame per nucleone, curva di stabilità e perché il ferro è il nucleo più stabile.</p></div>
+      <div class="card plain"><span class="tag">Modulo 3</span><h4 style="margin:.4rem 0 .2rem">Radioattività</h4><p style="font-size:.92rem;margin:0">Decadimenti α, β e γ, leggi di conservazione, legge del decadimento, attività e serie naturali.</p></div>
+      <div class="card plain"><span class="tag">Modulo 4</span><h4 style="margin:.4rem 0 .2rem">Fissione e fusione</h4><p style="font-size:.92rem;margin:0">Meccanismo della fissione, reazione a catena e massa critica; fusione nelle stelle e sulla Terra.</p></div>
+      <div class="card plain"><span class="tag">Modulo 5</span><h4 style="margin:.4rem 0 .2rem">Applicazioni</h4><p style="font-size:.92rem;margin:0">Reattori, medicina nucleare, datazione al carbonio-14, dosimetria e rischi delle radiazioni.</p></div>
+      <div class="card plain" style="background:var(--accent-soft)"><span class="tag">Quiz finale</span><h4 style="margin:.4rem 0 .2rem">Riepilogo generale</h4><p style="font-size:.92rem;margin:0">Verifica su tutto il programma: la correzione e il punteggio compaiono solo al termine.</p></div>
+    </div>
+
+    <div class="note neutral">
+      <h4>Come usare l'applicazione</h4>
+      <p style="margin-bottom:.2rem">Le schede in alto selezionano il modulo; le pillole sotto il titolo scelgono Teoria, Simulazioni, Esercizi o Quiz. Conviene seguire l'ordine dei moduli, ma nulla vieta di esplorare liberamente. Nelle simulazioni i cursori e i pulsanti aggiornano il modello in tempo reale; negli esercizi i suggerimenti vanno usati solo dopo aver provato da soli. In alto a destra il pulsante commuta fra modalità giorno e notte.</p>
+    </div>
+
+    <h3>Breve storia della fisica nucleare</h3>
+    <p>La fisica nucleare nasce a cavallo fra Ottocento e Novecento e si sviluppa in poco più di mezzo secolo, intrecciando scoperte sperimentali e nuove idee teoriche. Ecco le tappe che incontrerai lungo il percorso.</p>
+
+    <div class="svg-box">
+      <svg viewBox="0 0 760 300" role="img" aria-label="Linea del tempo delle principali scoperte della fisica nucleare">
+        <line x1="40" y1="150" x2="720" y2="150" stroke="var(--border-strong)" stroke-width="2"/>
+        <defs><marker id="tlArr" markerWidth="10" markerHeight="10" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="var(--border-strong)"/></marker></defs>
+        <line x1="720" y1="150" x2="740" y2="150" stroke="var(--border-strong)" stroke-width="2" marker-end="url(#tlArr)"/>
+        <!-- tacche -->
+        <g font-family="ui-sans-serif,system-ui,sans-serif">
+          <!-- 1896 sopra -->
+          <line x1="70" y1="150" x2="70" y2="112" stroke="var(--c-gamma)" stroke-width="1.6"/>
+          <circle cx="70" cy="150" r="5" fill="var(--c-gamma)"/>
+          <text x="70" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)">1896</text>
+          <text x="70" y="90" text-anchor="middle" font-size="11" fill="var(--muted)">Becquerel:</text>
+          <text x="70" y="78" text-anchor="middle" font-size="11" fill="var(--muted)">radioattività</text>
+          <!-- 1898 sotto -->
+          <line x1="150" y1="150" x2="150" y2="188" stroke="var(--c-beta+)" stroke-width="1.6"/>
+          <circle cx="150" cy="150" r="5" fill="var(--c-beta+)"/>
+          <text x="150" y="205" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)">1898</text>
+          <text x="150" y="219" text-anchor="middle" font-size="11" fill="var(--muted)">Curie: polonio</text>
+          <text x="150" y="231" text-anchor="middle" font-size="11" fill="var(--muted)">e radio</text>
+          <!-- 1911 sopra -->
+          <line x1="250" y1="150" x2="250" y2="112" stroke="var(--c-alpha)" stroke-width="1.6"/>
+          <circle cx="250" cy="150" r="5" fill="var(--c-alpha)"/>
+          <text x="250" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)">1911</text>
+          <text x="250" y="90" text-anchor="middle" font-size="11" fill="var(--muted)">Rutherford:</text>
+          <text x="250" y="78" text-anchor="middle" font-size="11" fill="var(--muted)">il nucleo</text>
+          <!-- 1932 sotto -->
+          <line x1="360" y1="150" x2="360" y2="188" stroke="var(--c-neutron)" stroke-width="1.6"/>
+          <circle cx="360" cy="150" r="5" fill="var(--c-neutron)"/>
+          <text x="360" y="205" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)">1932</text>
+          <text x="360" y="219" text-anchor="middle" font-size="11" fill="var(--muted)">Chadwick:</text>
+          <text x="360" y="231" text-anchor="middle" font-size="11" fill="var(--muted)">il neutrone</text>
+          <!-- 1938 sopra -->
+          <line x1="470" y1="150" x2="470" y2="112" stroke="var(--c-beta-)" stroke-width="1.6"/>
+          <circle cx="470" cy="150" r="5" fill="var(--c-beta-)"/>
+          <text x="470" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)">1938</text>
+          <text x="470" y="90" text-anchor="middle" font-size="11" fill="var(--muted)">Hahn, Strassmann,</text>
+          <text x="470" y="78" text-anchor="middle" font-size="11" fill="var(--muted)">Meitner: fissione</text>
+          <!-- 1942 sotto -->
+          <line x1="580" y1="150" x2="580" y2="188" stroke="var(--accent)" stroke-width="1.6"/>
+          <circle cx="580" cy="150" r="5" fill="var(--accent)"/>
+          <text x="580" y="205" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)">1942</text>
+          <text x="580" y="219" text-anchor="middle" font-size="11" fill="var(--muted)">Fermi: primo</text>
+          <text x="580" y="231" text-anchor="middle" font-size="11" fill="var(--muted)">reattore</text>
+          <!-- 1952 sopra -->
+          <line x1="680" y1="150" x2="680" y2="112" stroke="var(--c-gamma)" stroke-width="1.6"/>
+          <circle cx="680" cy="150" r="5" fill="var(--c-gamma)"/>
+          <text x="680" y="104" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-ink)">1952</text>
+          <text x="680" y="90" text-anchor="middle" font-size="11" fill="var(--muted)">fusione</text>
+          <text x="680" y="78" text-anchor="middle" font-size="11" fill="var(--muted)">termonucleare</text>
+        </g>
+      </svg>
+      <p class="svg-cap ui">Poco più di mezzo secolo dalla scoperta della radioattività alle prime reazioni di fusione controllate.</p>
+    </div>
+
+    <ul>
+      <li><strong>1896 &mdash; Henri Becquerel</strong> scopre casualmente che i sali di uranio emettono una radiazione capace di impressionare una lastra fotografica al buio: è la prima manifestazione della radioattività naturale.</li>
+      <li><strong>1898 &mdash; Marie e Pierre Curie</strong> isolano il polonio e il radio e coniano il termine <em>radioattività</em>, mostrando che si tratta di una proprietà di certi elementi e non di una reazione chimica.</li>
+      <li><strong>1911 &mdash; Ernest Rutherford</strong>, interpretando l'esperimento di Geiger e Marsden, dimostra che la carica positiva e quasi tutta la massa dell'atomo sono concentrate in un nucleo minuscolo.</li>
+      <li><strong>1932 &mdash; James Chadwick</strong> scopre il neutrone, completando il quadro dei costituenti del nucleo e aprendo la strada allo studio delle reazioni nucleari.</li>
+      <li><strong>1934 &mdash; Enrico Fermi</strong> mostra che i neutroni lenti sono particelle ideali per innescare reazioni nucleari, gettando le basi della fisica dei reattori.</li>
+      <li><strong>1938 &mdash; Otto Hahn e Fritz Strassmann</strong>, con l'interpretazione teorica di <strong>Lise Meitner e Otto Frisch</strong>, scoprono la fissione nucleare: un nucleo pesante si spezza in due frammenti liberando energia.</li>
+      <li><strong>1942 &mdash; Enrico Fermi</strong> realizza a Chicago la prima reazione a catena controllata e autosostenuta.</li>
+      <li><strong>anni '50 &mdash;</strong> vengono realizzate le prime reazioni di fusione termonucleare e nasce la ricerca, tuttora in corso, sulla fusione controllata a scopo energetico.</li>
+    </ul>
+
+    <div class="note">
+      <h4>Le tre idee che tengono insieme tutto</h4>
+      <p style="margin-bottom:.2rem">Nonostante la varietà dei fenomeni, il percorso ruota attorno a tre concetti che ritroverai in ogni modulo: l'<strong>interazione forte</strong>, che tiene insieme il nucleo; l'<strong>equivalenza massa-energia</strong> \(E=mc^2\), che spiega da dove viene l'energia nucleare; e il carattere <strong>probabilistico</strong> dei processi nucleari, che governa la legge del decadimento. Tienili a mente: sono il filo conduttore di tutto ciò che segue.</p>
+    </div>
+
+    <div class="btnrow"><button class="btn ui" data-gomod="m1">Inizia dal primo modulo</button></div>
+  </section>
+
+</div>
+<!-- fine header dei moduli; il magazzino contenuti segue -->
+
 
 <!-- ================================================================
      MAGAZZINO CONTENUTI (nascosto: i nodi vengono ricollocati via JS)
@@ -1218,7 +1327,7 @@ footer.site{border-top:1px solid var(--border);background:var(--surface);padding
 
 <footer class="site">
   <div class="wrap">
-    <p style="margin:.2rem 0">Applicazione didattica di Fisica Nucleare &mdash; quinto anno del liceo scientifico. Contenuti conformi ai programmi ministeriali; i valori numerici sono tratti da tabelle di riferimento standard e arrotondati per uso didattico.</p>
+    <p style="margin:.2rem 0">Applicazione didattica di Fisica Nucleare. I valori numerici sono tratti da tabelle di riferimento standard e arrotondati per uso didattico.</p>
     <p style="margin:.2rem 0">Le simulazioni sono modelli semplificati, pensati per rendere visibili le relazioni fisiche, non per riprodurre quantitativamente il comportamento di sistemi reali.</p>
   </div>
 </footer>
@@ -3189,9 +3298,11 @@ function buildDatingWidget(host){
     setTimeout(redrawAll, 50); setTimeout(redrawAll, 260);
   }
   function showModule(id, sub){
+    const sec = $('#mod-' + id);
     $$('#moduleHost .module').forEach(m => m.classList.toggle('active', m.id === 'mod-' + id));
     $$('nav.main button').forEach(b => b.setAttribute('aria-current', String(b.dataset.mod === id)));
-    if(id !== 'mfin'){
+    /* le schede senza sotto-navigazione (Introduzione, Quiz finale) non hanno pane */
+    if(sec && $('.subnav', sec)){
       showSub(id, sub || current[id] || 'teoria');
     }else{
       setTimeout(redrawAll, 50);
@@ -3209,9 +3320,11 @@ function buildDatingWidget(host){
     const sec = b.closest('.module'); if(sec) showSub(sec.id.replace('mod-',''), 'quiz');
     window.scrollTo({top:0, behavior:'smooth'});
   }));
+  /* pulsante "Inizia dal primo modulo" nell'introduzione */
+  $$('[data-gomod]').forEach(b => b.addEventListener('click', () => showModule(b.dataset.gomod)));
 
   /* stato iniziale */
-  showModule('m1', 'teoria');
+  showModule('intro');
   window.FNnav = showModule;
 })();
 
